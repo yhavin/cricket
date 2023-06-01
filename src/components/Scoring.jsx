@@ -1,13 +1,34 @@
 import React, { useState } from 'react';
 import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
 
 const Scoring = () => {
 
   const samplePlayers = [
-    { name: 'Yakir', isBatting: false, isOut: false, howOut: null, wicketBowler: null, Runs: null, Balls: null },
-    { name: 'Nochum', isBatting: false, isOut: false, howOut: null, wicketBowler: null, Runs: null, Balls: null },
-    { name: 'Lobo', isBatting: false, isOut: false, howOut: null, wicketBowler: null, Runs: null, Balls: null }
+    { name: 'Yakir', isBatting: false, isOut: false, howOut: null, wicketBowler: null, runs: 0, balls: 0 },
+    { name: 'Nochum', isBatting: false, isOut: false, howOut: null, wicketBowler: null, runs: 0, balls: 0 },
+    { name: 'Lobo', isBatting: false, isOut: false, howOut: null, wicketBowler: null, runs: 0, balls: 0 }
   ]
+
+  const [batsman, setBatsman] = useState('');
+  const [nonStriker, setNonStriker] = useState('');
+
+  const [matchStarted, setMatchStarted] = useState(false);
+
+  const handleStart = () => {
+    setMatchStarted(true);
+    setBatsman(samplePlayers[0]);
+    setNonStriker(samplePlayers[1]);
+  };
+
+  const incrementScore = (runs) => {
+    const playerIndex = samplePlayers.findIndex((player) => player.name === batsman.name);
+    const currentPlayer = samplePlayers[playerIndex];
+    currentPlayer.runs += 1;
+    currentPlayer.balls += 1;
+    console.log(currentPlayer);
+    console.log(samplePlayers);
+  }
 
   return (
     <div>
@@ -24,17 +45,23 @@ const Scoring = () => {
         </thead>
         <tbody>
         {samplePlayers.map((player, index) => (
-          <tr>
+          <tr key={index}>
             <td>{player.name} <br /> {player.howOut}</td>
             <td>{player.isBatting}</td>
-            <td>{player.Runs}</td>
-            <td>{player.Balls}</td>
+            <td>{player.runs}</td>
+            <td>{player.balls}</td>
           </tr>
         ))}
         </tbody>
       </Table>
 
-      
+      <Button variant="primary" onClick={handleStart}>Start match</Button>
+
+      <p>{"Match started: " + matchStarted}</p>
+      <p>{"Batsman: " + batsman.name}</p>
+      <p>{"Non-striker: " + nonStriker.name}</p>
+
+      <Button variant="secondary" onClick={() => {incrementScore(1)}}>1</Button>
     </div>
   );
 }
